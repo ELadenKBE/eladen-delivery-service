@@ -43,6 +43,7 @@ class DeliveryService:
         self.channel.start_consuming()
 
     def _execute_delivery(self, ch, method, properties, body):
+        print(f" [x] Received: {body.decode()}")
         order_dict = json.loads(body)
         id = order_dict["id"]
         query = """mutation {{
@@ -52,7 +53,7 @@ class DeliveryService:
                 }}
             }}"""
         formatted_query = query.format(id)
-        # time.sleep(2000)
+   #     time.sleep(1500)
         response = requests.post(self.url,
                                  data={'query': formatted_query})
         self.validate_errors(response)
